@@ -1,0 +1,49 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_wifi_aware">
+
+        <EditTextPreference
+            app:key="id"
+            app:title="@string/title_id"
+            app:useSimpleSummaryProvider="true" />
+
+        <!-- temp -->
+<!--        <ListPreference-->
+<!--            app:defaultValue="reply"-->
+<!--            app:entries="@array/reply_entries"-->
+<!--            app:entryValues="@array/reply_values"-->
+<!--            app:key="reply"-->
+<!--            app:title="@string/reply_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_wifi_rtt">
+
+        <EditTextPreference
+            app:key="interval"
+            app:title="@string/title_interval"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="500" />
+
+        <EditTextPreference
+            app:key="timeout"
+            app:title="@string/title_timeout"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="60000" />
+
+        <!-- temp -->
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="sync"-->
+<!--            app:title="@string/sync_title" />-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:dependency="sync"-->
+<!--            app:key="attachment"-->
+<!--            app:summaryOff="@string/attachment_summary_off"-->
+<!--            app:summaryOn="@string/attachment_summary_on"-->
+<!--            app:title="@string/attachment_title" />-->
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

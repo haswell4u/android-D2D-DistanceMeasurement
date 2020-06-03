@@ -1,3 +1,49 @@
 <resources>
     <string name="app_name">DistanceMeasurement</string>
+
+    <string name="settings_activity_name">Settings</string>
+
+    <string name="title_devices">Devices</string>
+    <string name="title_events">Events</string>
+    <string name="label_init_button">INIT</string>
+    <string name="label_start_button">START</string>
+    <string name="label_stop_button">STOP</string>
+
+    <string name="title_settings">SETTINGS</string>
+    <string name="title_back">BACK</string>
+
+    <string name="category_wifi_aware">Wifi Aware</string>
+    <string name="category_wifi_rtt">Wifi RTT</string>
+
+    <string name="title_id">Your ID</string>
+    <string name="title_interval">Measurement Interval (ms)</string>
+    <string name="title_timeout">Measurement Timeout (ms)</string>
+
+    <string name="notification_channel_name">Distance measurement</string>
+    <string name="notification_title">This device is measuring distance</string>
+    <string name="notification_text">Tab to turn off measuring</string>
+
+    <string name="error_message_permission_denied">Permission denied</string>
+    <string name="error_message_wifi_aware">This device does not support WiFi Aware.</string>
+    <string name="error_message_wifi_rtt">This device does not support WiFi RTT.</string>
+    <string name="error_message_set_id">Set your ID.</string>
+
+    <string name="message_obtain_session">Obtained a session.</string>
+    <string name="message_close_session">Closed a session.</string>
+    <string name="message_publish_service">Published a service.</string>
+    <string name="message_subscribe_service">Subscribed to a session.</string>
+    <string name="message_find_new_user">A user (ID: ) is found.</string>
+    <string name="message_wifi_aware_state_changed">WiFi Aware is not currently available.</string>
+    <string name="message_wifi_rtt_state_changed">WiFi RTT is not currently available.</string>
+    <string name="message_wifi_rtt_ranging_failure">WiFi RTT Ranging Failure</string>
+    <string name="message_wifi_rtt_ranging_status_success">WiFi RTT Ranging Status Success</string>
+    <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT Ranging Status Fail</string>
+
+    <!-- Temp -->
+    <string name="reply_title">Default reply action</string>
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
