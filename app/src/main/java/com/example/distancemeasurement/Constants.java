@@ -27,6 +27,12 @@ public class Constants {
     public static final int NOTIFICATION_ID = 10;
     public static final String NOTIFICATION_CHANNEL_ID = "com.example.distancemeasurement";
 
+    public static final String PREFERENCES_NAME_FILE = "file";
+    public static final boolean PREFERENCES_DEFAULT_FILE = false;
+    public static final String PREFERENCES_NAME_FILENAME = "filename";
+    public static final boolean PREFERENCES_DEFAULT_FILENAME = false;
+    public static final String PREFERENCES_NAME_FILENAME_TEXT = "filename_text";
+    public static final String PREFERENCES_DEFAULT_FILENAME_TEXT = "SNQz4YoYRL";
     public static final String PREFERENCES_NAME_DEVICE_ID = "id";
     public static final String PREFERENCES_DEFAULT_DEVICE_ID = "SNQz4YoYRL";
     public static final String PREFERENCES_NAME_INTERVAL = "interval";
@@ -34,7 +40,5 @@ public class Constants {
     public static final String PREFERENCES_NAME_TIMEOUT = "timeout";
     public static final String PREFERENCES_DEFAULT_TIMEOUT = "-1";
 
-    public static final int MESSAGE_TYPE_INFO = 10000;
-    public static final int MESSAGE_TYPE_SUCC = 20000;
-    public static final int MESSAGE_TYPE_FAIL = 30000;
+    public static final String FILE_WRITE_EXTENSION = ".txt";
 }

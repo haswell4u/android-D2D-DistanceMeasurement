@@ -1,5 +1,24 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory app:title="@string/category_general">
+
+        <SwitchPreferenceCompat
+            app:key="file"
+            app:title="@string/title_file" />
+
+        <SwitchPreferenceCompat
+            app:dependency="file"
+            app:key="filename"
+            app:title="@string/title_filename" />
+
+        <EditTextPreference
+            app:dependency="filename"
+            app:key="filename_text"
+            app:title="@string/title_filename_text"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/category_wifi_aware">
 
         <EditTextPreference
@@ -31,18 +50,6 @@
             app:title="@string/title_timeout"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="60000" />
-
-        <!-- temp -->
-<!--        <SwitchPreferenceCompat-->
-<!--            app:key="sync"-->
-<!--            app:title="@string/sync_title" />-->
-
-<!--        <SwitchPreferenceCompat-->
-<!--            app:dependency="sync"-->
-<!--            app:key="attachment"-->
-<!--            app:summaryOff="@string/attachment_summary_off"-->
-<!--            app:summaryOn="@string/attachment_summary_on"-->
-<!--            app:title="@string/attachment_title" />-->
 
     </PreferenceCategory>
 

@@ -27,6 +27,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Intent mServiceIntent;
 
     private SharedPreferences mSharedPreferences;
+
+    private PrintWriter mPrintWriter;
 
     private BroadcastReceiver mServiceBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -180,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (v.getId() == R.id.startButton) {
             mStartButton.setEnabled(false);
+            if (isFileWriteMode())
+                getPrintWriter();
             startService(mServiceIntent);
         }
         else if (v.getId() == R.id.stopButton)
@@ -202,6 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 oldDevice.update(newDevice);
             else
                 mAdapter.add(newDevice);
+            if (isFileWriteMode())
+                WriteToFile(newDevice);
         }
 
         removeDevices();
@@ -235,6 +244,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void actionStopButton() {
         mInitButton.setEnabled(true);
         stopService(mServiceIntent);
+        if (mPrintWriter != null) {
+            mPrintWriter.close();
+            mPrintWriter = null;
+        }
         mStartButton.setEnabled(false);
         mStopButton.setEnabled(false);
     }
@@ -271,5 +284,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void clearText() {
         mTextView.setText("");
+    }
+
+    private boolean isFileWriteMode() {
+        return mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_FILE,
+                Constants.PREFERENCES_DEFAULT_FILE);
+    }
+
+    private boolean hasSpecificFileName() {
+        return mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_FILENAME,
+                Constants.PREFERENCES_DEFAULT_FILENAME);
+    }
+
+    private void WriteToFile(Device device) {
+        mPrintWriter.write(device.print() + "\n");
+        mPrintWriter.flush();
+    }
+
+    private void getPrintWriter() {
+        String filename = new SimpleDateFormat("MMddHHmmssSSS")
+                .format(new Date(System.currentTimeMillis())) + Constants.FILE_WRITE_EXTENSION;
+
+        if (hasSpecificFileName()) {
+            filename = mSharedPreferences
+                    .getString(Constants.PREFERENCES_NAME_FILENAME_TEXT,
+                            Constants.PREFERENCES_DEFAULT_FILENAME_TEXT)
+                    + Constants.FILE_WRITE_EXTENSION;
+        }
+
+        try {
+            mPrintWriter = new PrintWriter(new File(getFilesDir(), filename));
+        }
+        catch (FileNotFoundException e) {
+            actionStopButton();
+            addTextToTextView(getString(R.string.message_io_exception));
+        }
     }
 }

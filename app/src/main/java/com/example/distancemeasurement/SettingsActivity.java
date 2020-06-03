@@ -52,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            setInputType(Constants.PREFERENCES_NAME_FILENAME_TEXT, InputType.TYPE_CLASS_TEXT);
             setInputType(Constants.PREFERENCES_NAME_DEVICE_ID, InputType.TYPE_CLASS_TEXT);
             setInputType(Constants.PREFERENCES_NAME_INTERVAL, InputType.TYPE_CLASS_NUMBER);
             setInputType(Constants.PREFERENCES_NAME_TIMEOUT, InputType.TYPE_CLASS_NUMBER);

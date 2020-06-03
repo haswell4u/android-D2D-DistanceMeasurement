@@ -37,6 +37,10 @@ public class Device implements Serializable {
         this.rssi = device.rssi;
     }
 
+    public String print() {
+        return id + " " + time + " " + dist + " " + std + " " + nam + " " + nsm + " " + rssi;
+    }
+
     public String getId() {
         return id;
     }

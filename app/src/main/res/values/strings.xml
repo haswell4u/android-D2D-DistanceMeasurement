@@ -14,7 +14,11 @@
 
     <string name="category_wifi_aware">Wifi Aware</string>
     <string name="category_wifi_rtt">Wifi RTT</string>
+    <string name="category_general">General</string>
 
+    <string name="title_file">Write Events to File</string>
+    <string name="title_filename">Use Specific File Names</string>
+    <string name="title_filename_text">File Name</string>
     <string name="title_id">Your ID</string>
     <string name="title_interval">Measurement Interval (ms)</string>
     <string name="title_timeout">Measurement Timeout (ms)</string>
@@ -38,6 +42,7 @@
     <string name="message_wifi_rtt_ranging_failure">WiFi RTT Ranging Failure</string>
     <string name="message_wifi_rtt_ranging_status_success">WiFi RTT Ranging Status Success</string>
     <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT Ranging Status Fail</string>
+    <string name="message_io_exception">PrintWriter is not currently available.</string>
 
     <!-- Temp -->
     <string name="reply_title">Default reply action</string>
