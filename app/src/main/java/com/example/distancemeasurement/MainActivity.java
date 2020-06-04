@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.aware.WifiAwareManager;
 import android.net.wifi.rtt.WifiRttManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -313,11 +314,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         try {
-            mPrintWriter = new PrintWriter(new File(getFilesDir(), filename));
+            if (isExternalStorageWritable())
+                mPrintWriter = new PrintWriter(
+                        new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                                + Constants.FILE_WRITE_FOLDER, filename));
+            else {
+                actionStopButton();
+                addTextToTextView(getString(R.string.message_io_exception));
+            }
         }
         catch (FileNotFoundException e) {
             actionStopButton();
             addTextToTextView(getString(R.string.message_io_exception));
         }
+    }
+
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state))
+            return true;
+        return false;
     }
 }

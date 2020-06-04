@@ -8,7 +8,8 @@ public class Constants {
     public static final String[] PERMISSIONS = {
             Manifest.permission.ACCESS_WIFI_STATE,
             Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     public static final String ACTION_INFORMATION_GENERATED = "com.example.distancemeasurement";
@@ -40,5 +41,6 @@ public class Constants {
     public static final String PREFERENCES_NAME_TIMEOUT = "timeout";
     public static final String PREFERENCES_DEFAULT_TIMEOUT = "-1";
 
+    public static final String FILE_WRITE_FOLDER = "/Events";
     public static final String FILE_WRITE_EXTENSION = ".txt";
 }
