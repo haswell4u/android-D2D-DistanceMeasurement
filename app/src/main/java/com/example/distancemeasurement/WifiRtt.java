@@ -32,6 +32,8 @@ public class WifiRtt {
 
     private Timer mTimer;
 
+    private boolean isMeasuring = false;
+
     public WifiRtt(MeasurementService service) {
         mMeasurementService = service;
 
@@ -55,13 +57,15 @@ public class WifiRtt {
             @Override
             public void run() {
                 if (mMeasurementService.mPeerHandleList.size() != 0) {
-                    try {
-                        mWifiRttManager.startRanging(createRequest(),
-                                mMeasurementService.getMainExecutor(), mRangingCallback);
-                    }
-                    catch (SecurityException e) {
-                        mMeasurementService.sendBroadcast(
-                                new Intent(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED));
+                    if (!isMeasuring) {
+                        isMeasuring = true;
+                        try {
+                            mWifiRttManager.startRanging(createRequest(),
+                                    mMeasurementService.getMainExecutor(), mRangingCallback);
+                        } catch (SecurityException e) {
+                            mMeasurementService.sendBroadcast(
+                                    new Intent(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED));
+                        }
                     }
                 }
             }
@@ -117,6 +121,7 @@ public class WifiRtt {
         public void onRangingFailure(int code) {
             mMeasurementService.sendMessage(mMeasurementService
                     .getString(R.string.message_wifi_rtt_ranging_failure));
+            isMeasuring = false;
         }
 
         @Override
@@ -135,6 +140,7 @@ public class WifiRtt {
             }
 
             sendDevice(list);
+            isMeasuring = false;
         }
     }
 }

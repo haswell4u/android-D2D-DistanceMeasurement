@@ -117,9 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == Constants.PERMISSIONS_REQUEST_CODE) {
-            if (grantResults.length == 0)
-                closeApp(getString(R.string.error_message_permission_denied));
-            else {
+            if (grantResults.length != 0) {
                 for (int grantResult : grantResults) {
                     if (grantResult == PackageManager.PERMISSION_DENIED)
                         closeApp(getString(R.string.error_message_permission_denied));
@@ -174,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Constants.PREFERENCES_DEFAULT_DEVICE_ID)
                     .equals(Constants.PREFERENCES_DEFAULT_DEVICE_ID)) {
                 mInitButton.setEnabled(false);
+                clearList();
                 clearText();
                 startService(mServiceIntent);
                 mStartButton.setEnabled(true);
@@ -281,6 +280,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mScrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
+    }
+
+    private void clearList() {
+        mAdapter.clear();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void clearText() {
