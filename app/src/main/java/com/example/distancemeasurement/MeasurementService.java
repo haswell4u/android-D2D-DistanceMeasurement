@@ -86,4 +86,11 @@ public class MeasurementService extends Service {
                         Constants.INTENT_CONTENTS_TYPE_MESSAGE)
                 .putExtra(Constants.INTENT_CONTENTS_NAME_MESSAGE, message));
     }
+
+    public void sendError(String message) {
+        sendBroadcast(new Intent(Constants.ACTION_INFORMATION_GENERATED)
+                .putExtra(Constants.INTENT_CONTENTS_NAME_TYPE,
+                        Constants.INTENT_CONTENTS_TYPE_ERROR)
+                .putExtra(Constants.INTENT_CONTENTS_NAME_ERROR, message));
+    }
 }

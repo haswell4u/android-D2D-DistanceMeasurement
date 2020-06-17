@@ -54,8 +54,8 @@ public class WifiAware {
                 }
             }, null);
         else
-            mMeasurementService.sendBroadcast(
-                    new Intent(WifiAwareManager.ACTION_WIFI_AWARE_STATE_CHANGED));
+            mMeasurementService.sendError(mMeasurementService
+                    .getString(R.string.message_wifi_aware_state_changed));
     }
 
     private void publishService() {

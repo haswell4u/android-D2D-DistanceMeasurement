@@ -16,9 +16,11 @@ public class Constants {
     public static final String ACTION_INFORMATION_GENERATED = "com.example.distancemeasurement";
     public static final String INTENT_CONTENTS_NAME_TYPE = "type";
     public static final String INTENT_CONTENTS_NAME_MESSAGE = "message";
+    public static final String INTENT_CONTENTS_NAME_ERROR = "error";
     public static final String INTENT_CONTENTS_NAME_DEVICE = "device";
     public static final int INTENT_CONTENTS_TYPE_MESSAGE = 100;
     public static final int INTENT_CONTENTS_TYPE_UPDATE_DEVICE = 200;
+    public static final int INTENT_CONTENTS_TYPE_ERROR = 300;
     public static final int INTENT_CONTENTS_DEFAULT_INT = -1;
 
     public static final String WIFI_AWARE_SERVICE_NAME = "Test";

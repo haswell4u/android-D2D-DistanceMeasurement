@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (type == Constants.INTENT_CONTENTS_TYPE_MESSAGE)
                 addTextToTextView(intent.getStringExtra(Constants.INTENT_CONTENTS_NAME_MESSAGE));
+            else if (type == Constants.INTENT_CONTENTS_TYPE_ERROR) {
+                actionStopButton();
+                addTextToTextView(intent.getStringExtra(Constants.INTENT_CONTENTS_NAME_ERROR));
+            }
             else if (type == Constants.INTENT_CONTENTS_TYPE_UPDATE_DEVICE) {
                 @SuppressWarnings("unchecked")
                 ArrayList<Device> list = (ArrayList<Device>) intent

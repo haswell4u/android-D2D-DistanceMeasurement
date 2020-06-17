@@ -63,8 +63,8 @@ public class WifiRtt {
                             mWifiRttManager.startRanging(createRequest(),
                                     mMeasurementService.getMainExecutor(), mRangingCallback);
                         } catch (SecurityException e) {
-                            mMeasurementService.sendBroadcast(
-                                    new Intent(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED));
+                            mMeasurementService.sendError(mMeasurementService
+                                    .getString(R.string.message_wifi_rtt_state_changed));
                         }
                     }
                 }
