@@ -39,6 +39,7 @@
     <string name="message_find_new_user">A user (ID: ) is found.</string>
     <string name="message_wifi_aware_state_changed">WiFi Aware is not currently available.</string>
     <string name="message_wifi_rtt_state_changed">WiFi RTT is not currently available.</string>
+    <string name="message_wifi_rtt_ranging_start">WiFi RTT Ranging Start</string>
     <string name="message_wifi_rtt_ranging_failure">WiFi RTT Ranging Failure</string>
     <string name="message_wifi_rtt_ranging_status_success">WiFi RTT Ranging Status Success</string>
     <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT Ranging Status Fail</string>

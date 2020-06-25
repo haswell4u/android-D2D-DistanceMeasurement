@@ -176,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Constants.PREFERENCES_DEFAULT_DEVICE_ID)
                     .equals(Constants.PREFERENCES_DEFAULT_DEVICE_ID)) {
                 mInitButton.setEnabled(false);
+                if (isFileWriteMode())
+                    getPrintWriter();
                 clearList();
                 clearText();
                 startService(mServiceIntent);
@@ -189,8 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if (v.getId() == R.id.startButton) {
             mStartButton.setEnabled(false);
-            if (isFileWriteMode())
-                getPrintWriter();
             startService(mServiceIntent);
         }
         else if (v.getId() == R.id.stopButton)
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         unregisterReceiver(mWifiRttBroadcastReceiver);
         unregisterReceiver(mWifiAwareBroadcastReceiver);
         unregisterReceiver(mServiceBroadcastReceiver);
+        closePrintWriter();
     }
 
     private void updateListView(ArrayList<Device> newDevices) {
@@ -248,10 +249,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void actionStopButton() {
         mInitButton.setEnabled(true);
         stopService(mServiceIntent);
-        if (mPrintWriter != null) {
-            mPrintWriter.close();
-            mPrintWriter = null;
-        }
         mStartButton.setEnabled(false);
         mStopButton.setEnabled(false);
     }
@@ -284,6 +281,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mScrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
+        if (isFileWriteMode())
+            WriteToFile(getCurrentTime() + " " + text);
     }
 
     private void clearList() {
@@ -310,7 +309,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPrintWriter.flush();
     }
 
+    private void WriteToFile(String message) {
+        mPrintWriter.write(message + "\n");
+        mPrintWriter.flush();
+    }
+
     private void getPrintWriter() {
+        closePrintWriter();
+
         String filename = new SimpleDateFormat("MMddHHmmssSSS")
                 .format(new Date(System.currentTimeMillis())) + Constants.FILE_WRITE_EXTENSION;
 
@@ -322,22 +328,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         try {
-            if (isExternalStorageWritable())
-                mPrintWriter = new PrintWriter(
-                        new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                                + Constants.FILE_WRITE_FOLDER, filename));
+            if (isExternalStorageWritable()) {
+                File dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                        + Constants.FILE_WRITE_FOLDER);
+
+                if (!dir.exists())
+                    dir.mkdir();
+
+                mPrintWriter = new PrintWriter(new File(dir, filename));
+            }
             else {
                 actionStopButton();
-                addTextToTextView(getString(R.string.message_io_exception));
+                Toast.makeText(this, getString(R.string.message_io_exception),
+                        Toast.LENGTH_SHORT).show();
             }
         }
         catch (FileNotFoundException e) {
             actionStopButton();
-            addTextToTextView(getString(R.string.message_io_exception));
+            Toast.makeText(this, getString(R.string.message_io_exception),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
-    public boolean isExternalStorageWritable() {
+    private void closePrintWriter() {
+        if (mPrintWriter != null) {
+            mPrintWriter.close();
+            mPrintWriter = null;
+        }
+    }
+
+    private boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state))
             return true;

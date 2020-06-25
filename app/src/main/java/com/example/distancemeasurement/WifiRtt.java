@@ -60,6 +60,8 @@ public class WifiRtt {
                     if (!isMeasuring) {
                         isMeasuring = true;
                         try {
+                            mMeasurementService.sendMessage(mMeasurementService
+                                    .getString(R.string.message_wifi_rtt_ranging_start));
                             mWifiRttManager.startRanging(createRequest(),
                                     mMeasurementService.getMainExecutor(), mRangingCallback);
                         } catch (SecurityException e) {

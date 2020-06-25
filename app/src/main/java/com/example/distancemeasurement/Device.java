@@ -1,6 +1,8 @@
 package com.example.distancemeasurement;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Device implements Serializable {
 
@@ -38,7 +40,8 @@ public class Device implements Serializable {
     }
 
     public String print() {
-        return id + " " + time + " " + dist + " " + std + " " + nam + " " + nsm + " " + rssi;
+        return "[" + new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date(time)) + "] : "
+                + id + " " + dist + " " + std + " " + nam + " " + nsm + " " + rssi;
     }
 
     public String getId() {
