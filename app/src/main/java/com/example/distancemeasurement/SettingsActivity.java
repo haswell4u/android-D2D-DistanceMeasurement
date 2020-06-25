@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -52,6 +54,11 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            setDisableDependency(Constants.PREFERENCES_NAME_WIFI_AWARE,
+                    Constants.PREFERENCES_NAME_WIFI_RTT);
+            setDisableDependency(Constants.PREFERENCES_NAME_FILE,
+                    Constants.PREFERENCES_NAME_FILENAME);
+
             setInputType(Constants.PREFERENCES_NAME_FILENAME_TEXT, InputType.TYPE_CLASS_TEXT);
             setInputType(Constants.PREFERENCES_NAME_DEVICE_ID, InputType.TYPE_CLASS_TEXT);
             setInputType(Constants.PREFERENCES_NAME_INTERVAL, InputType.TYPE_CLASS_NUMBER);
@@ -66,6 +73,23 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public void onBindEditText(@NonNull EditText editText) {
                     editText.setInputType(inputType);
+                }
+            });
+        }
+
+        private void setDisableDependency(String iPreference, String dPreference) {
+            SwitchPreferenceCompat iSwitchPreferenceCompat = getPreferenceManager()
+                    .findPreference(iPreference);
+            final SwitchPreferenceCompat dSwitchPreferenceCompat = getPreferenceManager()
+                    .findPreference(dPreference);
+
+            iSwitchPreferenceCompat
+                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (!(Boolean) newValue)
+                        dSwitchPreferenceCompat.setChecked(false);
+                    return true;
                 }
             });
         }
