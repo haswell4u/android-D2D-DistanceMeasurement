@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 addTextToTextView(intent.getStringExtra(Constants.INTENT_CONTENTS_NAME_MESSAGE));
             else if (type == Constants.INTENT_CONTENTS_TYPE_ERROR) {
                 actionStopButton();
-                addTextToTextView(intent.getStringExtra(Constants.INTENT_CONTENTS_NAME_ERROR));
+                Toast.makeText(getApplicationContext(),
+                        intent.getStringExtra(Constants.INTENT_CONTENTS_NAME_ERROR),
+                        Toast.LENGTH_SHORT).show();
             }
             else if (type == Constants.INTENT_CONTENTS_TYPE_UPDATE_DEVICE) {
                 @SuppressWarnings("unchecked")
@@ -104,11 +106,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new IntentFilter(WifiAwareManager.ACTION_WIFI_AWARE_STATE_CHANGED));
         registerReceiver(mWifiRttBroadcastReceiver,
                 new IntentFilter(WifiRttManager.ACTION_WIFI_RTT_STATE_CHANGED));
-
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_AWARE))
-            closeApp(getString(R.string.error_message_wifi_aware));
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_RTT))
-            closeApp(getString(R.string.error_message_wifi_rtt));
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -249,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void actionStopButton() {
         mInitButton.setEnabled(true);
         stopService(mServiceIntent);
+        mAdapter.notifyDataSetChanged();
         mStartButton.setEnabled(false);
         mStopButton.setEnabled(false);
     }

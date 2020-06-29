@@ -1,4 +1,4 @@
-package com.example.distancemeasurement;
+package com.example.distancemeasurement.methods;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,11 @@ import android.net.wifi.aware.WifiAwareManager;
 import android.net.wifi.aware.WifiAwareSession;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
+
+import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.MeasurementService;
+import com.example.distancemeasurement.R;
+import com.example.distancemeasurement.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -60,7 +65,7 @@ public class WifiAware {
 
     private void publishService() {
         PublishConfig config = new PublishConfig.Builder()
-                .setServiceSpecificInfo(dataEncoding(mSharedPreferences
+                .setServiceSpecificInfo(Utils.dataEncoding(mSharedPreferences
                         .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
                                 Constants.PREFERENCES_DEFAULT_DEVICE_ID)))
                 .setServiceName(Constants.WIFI_AWARE_SERVICE_NAME)
@@ -85,12 +90,14 @@ public class WifiAware {
             @Override
             public void onSubscribeStarted(SubscribeDiscoverySession session) {
                 mSubscribeDiscoverySession = session;
-                mMeasurementService.sendMessage(mMeasurementService.getString(R.string.message_subscribe_service));
+                mMeasurementService.sendMessage(mMeasurementService
+                        .getString(R.string.message_subscribe_service));
             }
 
             @Override
-            public void onServiceDiscovered(PeerHandle peerHandle, byte[] serviceSpecificInfo, List<byte[]> matchFilter) {
-                String id = dataDecoding(serviceSpecificInfo);
+            public void onServiceDiscovered(PeerHandle peerHandle,
+                                            byte[] serviceSpecificInfo, List<byte[]> matchFilter) {
+                String id = Utils.dataDecoding(serviceSpecificInfo);
                 synchronized (mMeasurementService.mPeerHandleList) {
                     if (!mMeasurementService.mPeerHandleList.containsKey(id)) {
                         mMeasurementService.mPeerHandleList.put(id, peerHandle);
@@ -119,31 +126,5 @@ public class WifiAware {
             mWifiAwareSession.close();
             mMeasurementService.sendMessage(mMeasurementService.getString(R.string.message_close_session));
         }
-    }
-
-    private byte[] dataEncoding(String data) {
-        byte[] bytes = null;
-
-        try {
-            bytes = data.getBytes("UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return bytes;
-    }
-
-    private String dataDecoding(byte[] data) {
-        String str = null;
-
-        try {
-            str = new String(data, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return str;
     }
 }

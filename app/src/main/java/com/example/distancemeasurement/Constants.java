@@ -1,6 +1,7 @@
 package com.example.distancemeasurement;
 
 import android.Manifest;
+import android.os.ParcelUuid;
 
 public class Constants {
 
@@ -10,8 +11,13 @@ public class Constants {
             Manifest.permission.CHANGE_WIFI_STATE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.FOREGROUND_SERVICE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN
     };
+
+    public static final ParcelUuid BLE_SERVICE_UUID = ParcelUuid
+            .fromString("0000b81d-0000-1000-8000-00805f9b34fb");
 
     public static final String ACTION_INFORMATION_GENERATED = "com.example.distancemeasurement";
     public static final String INTENT_CONTENTS_NAME_TYPE = "type";
@@ -32,7 +38,11 @@ public class Constants {
     public static final String NOTIFICATION_CHANNEL_ID = "com.example.distancemeasurement";
 
     public static final String PREFERENCES_NAME_WIFI_AWARE = "wifi_aware";
+    public static final boolean PREFERENCES_DEFAULT_WIFI_AWARE = false;
     public static final String PREFERENCES_NAME_WIFI_RTT = "wifi_rtt";
+    public static final boolean PREFERENCES_DEFAULT_WIFI_RTT = false;
+    public static final String PREFERENCES_NAME_BLE = "ble";
+    public static final boolean PREFERENCES_DEFAULT_BLE = false;
     public static final String PREFERENCES_NAME_DEVICE_ID = "id";
     public static final String PREFERENCES_DEFAULT_DEVICE_ID = "SNQz4YoYRL";
     public static final String PREFERENCES_NAME_INTERVAL = "interval";

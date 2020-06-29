@@ -1,4 +1,4 @@
-package com.example.distancemeasurement;
+package com.example.distancemeasurement.methods;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
+
+import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.Device;
+import com.example.distancemeasurement.MeasurementService;
+import com.example.distancemeasurement.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,13 +104,6 @@ public class WifiRtt {
         return builder.build();
     }
 
-    private void sendDevice(ArrayList<Device> devices) {
-        mMeasurementService.sendBroadcast(new Intent(Constants.ACTION_INFORMATION_GENERATED)
-                .putExtra(Constants.INTENT_CONTENTS_NAME_TYPE,
-                        Constants.INTENT_CONTENTS_TYPE_UPDATE_DEVICE)
-                .putExtra(Constants.INTENT_CONTENTS_NAME_DEVICE, devices));
-    }
-
     private String getKeyByValue(HashMap<String, PeerHandle> map, PeerHandle target) {
         for (Map.Entry<String, PeerHandle> entry : map.entrySet()) {
             if (entry.getValue().equals(target))
@@ -141,7 +139,7 @@ public class WifiRtt {
                             .getString(R.string.message_wifi_rtt_ranging_status_fail));
             }
 
-            sendDevice(list);
+            mMeasurementService.sendDevice(list);
             isMeasuring = false;
         }
     }

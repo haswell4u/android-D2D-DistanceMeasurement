@@ -6,19 +6,28 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.wifi.aware.PeerHandle;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
+
+import com.example.distancemeasurement.methods.Bluetooth;
+import com.example.distancemeasurement.methods.WifiAware;
+import com.example.distancemeasurement.methods.WifiRtt;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MeasurementService extends Service {
 
     private WifiAware mWifiAware;
     private WifiRtt mWifiRtt;
+    private Bluetooth mBluetooth;
 
     private boolean isInitialized = false;
+
+    private SharedPreferences mSharedPreferences;
 
     public HashMap<String, PeerHandle> mPeerHandleList = new HashMap<String, PeerHandle>();
 
@@ -26,13 +35,28 @@ public class MeasurementService extends Service {
     public void onCreate() {
         super.onCreate();
         goForeground();
-        mWifiAware = new WifiAware(this);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_AWARE,
+                Constants.PREFERENCES_DEFAULT_WIFI_AWARE))
+            mWifiAware = new WifiAware(this);
+
+        if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_BLE,
+                Constants.PREFERENCES_DEFAULT_BLE))
+            mBluetooth = new Bluetooth(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (isInitialized)
-            mWifiRtt = new WifiRtt(this);
+        if (isInitialized) {
+            if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_RTT,
+                    Constants.PREFERENCES_DEFAULT_WIFI_RTT))
+                mWifiRtt = new WifiRtt(this);
+            if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_BLE,
+                    Constants.PREFERENCES_DEFAULT_BLE))
+                mBluetooth.startBluetoothLE();
+        }
         else
             isInitialized = true;
 
@@ -44,7 +68,10 @@ public class MeasurementService extends Service {
         super.onDestroy();
         if (mWifiRtt != null)
             mWifiRtt.close();
-        mWifiAware.close();
+        if (mWifiAware != null)
+            mWifiAware.close();
+        if (mBluetooth != null)
+            mBluetooth.close();
         stopForeground(true);
     }
 
@@ -92,5 +119,12 @@ public class MeasurementService extends Service {
                 .putExtra(Constants.INTENT_CONTENTS_NAME_TYPE,
                         Constants.INTENT_CONTENTS_TYPE_ERROR)
                 .putExtra(Constants.INTENT_CONTENTS_NAME_ERROR, message));
+    }
+
+    public void sendDevice(ArrayList<Device> devices) {
+        sendBroadcast(new Intent(Constants.ACTION_INFORMATION_GENERATED)
+                .putExtra(Constants.INTENT_CONTENTS_NAME_TYPE,
+                        Constants.INTENT_CONTENTS_TYPE_UPDATE_DEVICE)
+                .putExtra(Constants.INTENT_CONTENTS_NAME_DEVICE, devices));
     }
 }

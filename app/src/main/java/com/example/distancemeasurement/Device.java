@@ -8,11 +8,12 @@ public class Device implements Serializable {
 
     private String id;
     private long time;
-    private float dist;
+    private float dist = Integer.MAX_VALUE;
     private int std;
     private int nam;
     private int nsm;
     private int rssi;
+    private int rssi_ble = Integer.MAX_VALUE;
 
     public Device(String id, long time, float dist, int std, int nam, int nsm, int rssi) {
         this.id = id;
@@ -24,24 +25,51 @@ public class Device implements Serializable {
         this.rssi = rssi;
     }
 
+    public Device(String id, long time, int rssi_ble) {
+        this.id = id;
+        this.time = time;
+        this.rssi_ble = rssi_ble;
+    }
+
     @Override
     public String toString() {
-        return id + ": " + String.format("%.2f", dist) + "m";
+        StringBuffer sb = new StringBuffer();
+        sb.append(id + ": ");
+
+        if (dist != Integer.MAX_VALUE)
+            sb.append(String.format("%.2f", dist) + "m ");
+        if (rssi_ble != Integer.MAX_VALUE)
+            sb.append("(BLE RSSI = " + rssi_ble + ")");
+
+        return sb.toString();
     }
 
     public void update(Device device) {
-        this.id = device.id;
         this.time = device.time;
-        this.dist = device.dist;
-        this.std = device.std;
-        this.nam = device.nam;
-        this.nsm = device.nsm;
-        this.rssi = device.rssi;
+
+        if (device.rssi_ble != Integer.MAX_VALUE)
+            this.rssi_ble = device.rssi_ble;
+        else {
+            this.dist = device.dist;
+            this.std = device.std;
+            this.nam = device.nam;
+            this.nsm = device.nsm;
+            this.rssi = device.rssi;
+        }
     }
 
     public String print() {
-        return "[" + new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date(time)) + "] : "
-                + id + " " + dist + " " + std + " " + nam + " " + nsm + " " + rssi;
+        StringBuffer sb = new StringBuffer();
+        sb.append("[" + new SimpleDateFormat("MM/dd HH:mm:ss")
+                .format(new Date(time)) + "] : " + id);
+
+        if (dist != Integer.MAX_VALUE)
+            sb.append(" " + dist + " " + std + " " + nam + " " + nsm + " " + rssi);
+
+        if (rssi_ble != Integer.MAX_VALUE)
+            sb.append(" " + rssi_ble);
+
+        return sb.toString();
     }
 
     public String getId() {

@@ -5,13 +5,13 @@
         <SwitchPreferenceCompat
             app:key="wifi_aware"
             app:title="@string/title_wifi_aware"
-            app:defaultValue="true" />
+            app:defaultValue="false" />
 
         <SwitchPreferenceCompat
             app:dependency="wifi_aware"
             app:key="wifi_rtt"
             app:title="@string/title_wifi_rtt"
-            app:defaultValue="true" />
+            app:defaultValue="false" />
 
         <SwitchPreferenceCompat
             app:key="ble"

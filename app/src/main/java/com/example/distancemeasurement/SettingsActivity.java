@@ -1,5 +1,6 @@
 package com.example.distancemeasurement;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -54,6 +55,16 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            setDisable(PackageManager.FEATURE_WIFI_AWARE,
+                    Constants.PREFERENCES_NAME_WIFI_AWARE,
+                    getString(R.string.error_message_wifi_aware));
+            setDisable(PackageManager.FEATURE_WIFI_RTT,
+                    Constants.PREFERENCES_NAME_WIFI_RTT,
+                    getString(R.string.error_message_wifi_rtt));
+            setDisable(PackageManager.FEATURE_BLUETOOTH_LE,
+                    Constants.PREFERENCES_NAME_BLE,
+                    getString(R.string.error_message_ble));
+
             setDisableDependency(Constants.PREFERENCES_NAME_WIFI_AWARE,
                     Constants.PREFERENCES_NAME_WIFI_RTT);
             setDisableDependency(Constants.PREFERENCES_NAME_FILE,
@@ -65,16 +76,15 @@ public class SettingsActivity extends AppCompatActivity {
             setInputType(Constants.PREFERENCES_NAME_TIMEOUT, InputType.TYPE_CLASS_NUMBER);
         }
 
-        private void setInputType (String preference, final int inputType) {
-            EditTextPreference editTextPreference = getPreferenceManager()
-                    .findPreference(preference);
-            editTextPreference
-                    .setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
-                @Override
-                public void onBindEditText(@NonNull EditText editText) {
-                    editText.setInputType(inputType);
-                }
-            });
+        private void setDisable(String feature, String preference, String message) {
+            if (!getContext().getPackageManager()
+                    .hasSystemFeature(feature)) {
+                SwitchPreferenceCompat switchPreferenceCompat = getPreferenceManager()
+                        .findPreference(preference);
+                switchPreferenceCompat.setChecked(false);
+                switchPreferenceCompat.setSummary(message);
+                switchPreferenceCompat.setEnabled(false);
+            }
         }
 
         private void setDisableDependency(String iPreference, String dPreference) {
@@ -85,11 +95,23 @@ public class SettingsActivity extends AppCompatActivity {
 
             iSwitchPreferenceCompat
                     .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            if (!(Boolean) newValue)
+                                dSwitchPreferenceCompat.setChecked(false);
+                            return true;
+                        }
+                    });
+        }
+
+        private void setInputType(String preference, final int inputType) {
+            EditTextPreference editTextPreference = getPreferenceManager()
+                    .findPreference(preference);
+            editTextPreference
+                    .setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (!(Boolean) newValue)
-                        dSwitchPreferenceCompat.setChecked(false);
-                    return true;
+                public void onBindEditText(@NonNull EditText editText) {
+                    editText.setInputType(inputType);
                 }
             });
         }

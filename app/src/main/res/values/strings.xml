@@ -34,6 +34,11 @@
     <string name="error_message_permission_denied">Permission denied</string>
     <string name="error_message_wifi_aware">This device does not support WiFi Aware.</string>
     <string name="error_message_wifi_rtt">This device does not support WiFi RTT.</string>
+    <string name="error_message_ble">This device does not support BLE.</string>
+    <string name="error_message_ble_turn_on">Turn on Bluetooth.</string>
+    <string name="error_message_ble_adv">Bluetooth Advertisements are not supported.</string>
+    <string name="error_message_ble_adv_fail">Bluetooth Advertisements failed to start.</string>
+    <string name="error_message_ble_scn_fail">Bluetooth Scanning failed to start.</string>
     <string name="error_message_set_id">Set your ID.</string>
 
     <string name="message_obtain_session">Obtained a session.</string>
@@ -47,13 +52,9 @@
     <string name="message_wifi_rtt_ranging_failure">WiFi RTT Ranging Failure</string>
     <string name="message_wifi_rtt_ranging_status_success">WiFi RTT Ranging Status Success</string>
     <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT Ranging Status Fail</string>
+    <string name="message_ble_ready">BLE Ready</string>
+    <string name="message_find_new_user_ble">A user (ID: ) is found. (BLE)</string>
+    <string name="message_ble_adv_stop">Stopping Advertising.</string>
+    <string name="message_ble_scn_stop">Stopping Scanning.</string>
     <string name="message_io_exception">PrintWriter is not currently available.</string>
-
-    <!-- Temp -->
-    <string name="reply_title">Default reply action</string>
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
