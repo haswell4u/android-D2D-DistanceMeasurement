@@ -69,7 +69,6 @@ public class WifiAware {
                         .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
                                 Constants.PREFERENCES_DEFAULT_DEVICE_ID)))
                 .setServiceName(Constants.WIFI_AWARE_SERVICE_NAME)
-                .setRangingEnabled(true)
                 .build();
 
         mWifiAwareSession.publish(config, new DiscoverySessionCallback() {
