@@ -10,6 +10,8 @@ import android.net.wifi.aware.WifiAwareManager;
 import android.net.wifi.rtt.WifiRttManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +40,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Intent mServiceIntent;
 
     private SharedPreferences mSharedPreferences;
+
+    private Timer mTimer;
+    private RemoveHandler mRemoveHandler;
 
     private PrintWriter mPrintWriter;
 
@@ -76,7 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ArrayList<Device> list = (ArrayList<Device>) intent
                         .getSerializableExtra(Constants.INTENT_CONTENTS_NAME_DEVICE);
 
-                updateListView(list);
+                synchronized (mAdapter) {
+                    updateListView(list);
+                }
             }
         }
     };
@@ -182,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clearList();
                 clearText();
                 startService(mServiceIntent);
+                mTimer = new Timer();
+                mRemoveHandler = new RemoveHandler();
                 mStartButton.setEnabled(true);
                 mStopButton.setEnabled(true);
             }
@@ -193,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if (v.getId() == R.id.startButton) {
             mStartButton.setEnabled(false);
             startService(mServiceIntent);
+            startRemoveTimer();
         }
         else if (v.getId() == R.id.stopButton)
             actionStopButton();
@@ -201,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mTimer.cancel();
         stopService(mServiceIntent);
         unregisterReceiver(mWifiRttBroadcastReceiver);
         unregisterReceiver(mWifiAwareBroadcastReceiver);
@@ -219,8 +232,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 WriteToFile(newDevice);
         }
 
-        removeDevices();
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void startRemoveTimer() {
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mRemoveHandler.sendMessage(mRemoveHandler.obtainMessage());
+            }
+        }, Constants.CHECK_REMOVE_INTERVAL, Constants.CHECK_REMOVE_INTERVAL);
     }
 
     private Device hasDeviceInAdapter(Device device) {
@@ -243,13 +264,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 removeList.add(mAdapter.getItem(i));
         }
 
-        for (Device device: removeList)
+        for (Device device: removeList) {
             mAdapter.remove(device);
+            addTextToTextView(createRemoveUserMessage(device.getId()));
+        }
+
+        mAdapter.notifyDataSetChanged();
         // Todo (Delete devices from the list in service)
+    }
+
+    private String createRemoveUserMessage(String id) {
+        StringBuffer str = new StringBuffer(getString(R.string.message_device_remove));
+        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
+        return str.toString();
     }
 
     private void actionStopButton() {
         mInitButton.setEnabled(true);
+        mTimer.cancel();
         stopService(mServiceIntent);
         mAdapter.notifyDataSetChanged();
         mStartButton.setEnabled(false);
@@ -365,5 +397,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (Environment.MEDIA_MOUNTED.equals(state))
             return true;
         return false;
+    }
+
+    private class RemoveHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            synchronized (mAdapter) {
+                removeDevices();
+            }
+        }
     }
 }

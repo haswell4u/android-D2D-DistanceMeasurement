@@ -32,7 +32,8 @@ public class Constants {
     public static final String WIFI_AWARE_SERVICE_NAME = "Test";
     public static final int WIFI_AWARE_CHECK_ALIVE_ID = 2000;
 
-    public static final int OFFSET_MESSAGE_FIND_NEW_USER = 12;
+    public static final int OFFSET_MESSAGE_FIND_REMOVE_USER = 12;
+    public static final int CHECK_REMOVE_INTERVAL = 1000;
 
     public static final int PENDING_INTENT_REQUEST_CODE = 0;
     public static final int NOTIFICATION_ID = 10;

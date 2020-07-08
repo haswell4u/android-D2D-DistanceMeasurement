@@ -1,5 +1,7 @@
 package com.example.distancemeasurement;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +49,12 @@ public class Device implements Serializable {
             sb.append("(BLE RSSI = " + rssi_ble + ")");
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        Device newDevice = (Device) obj;
+        return this.id.equals(newDevice.id);
     }
 
     public void update(Device device) {

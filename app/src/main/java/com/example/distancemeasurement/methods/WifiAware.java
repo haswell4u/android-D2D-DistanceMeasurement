@@ -118,7 +118,7 @@ public class WifiAware {
                 synchronized (mMeasurementService.mPeerHandleList) {
                     if (!mMeasurementService.mPeerHandleList.containsKey(id)) {
                         mMeasurementService.mPeerHandleList.put(id, peerHandle);
-                        mMeasurementService.sendMessage(createFindNewUserMessage(id));
+                        mMeasurementService.sendMessage(createFindUserMessage(id));
                     }
                     else
                         mMeasurementService.mPeerHandleList.replace(id, peerHandle);
@@ -130,13 +130,13 @@ public class WifiAware {
                 super.onMessageReceived(peerHandle, message);
                 ArrayList<Device> list = new ArrayList<Device>();
                 list.add(createDevice(Utils.dataDecoding(message)));
+                mMeasurementService.sendMessage(createFindUserMessage(Utils.dataDecoding(message)));
                 mMeasurementService.sendDevice(list);
             }
         }, null);
     }
 
     public void checkAlive() {
-        // Todo (This interval must be less than timeout)
         long interval = Long.parseLong(mSharedPreferences
                 .getString(Constants.PREFERENCES_NAME_REFRESH,
                         Constants.PREFERENCES_DEFAULT_REFRESH));
@@ -162,10 +162,10 @@ public class WifiAware {
         return new Device(id, time);
     }
 
-    private String createFindNewUserMessage(String id) {
+    private String createFindUserMessage(String id) {
         StringBuffer str = new StringBuffer(mMeasurementService
                 .getString(R.string.message_find_new_user));
-        str.insert(Constants.OFFSET_MESSAGE_FIND_NEW_USER, id);
+        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
         return str.toString();
     }
 

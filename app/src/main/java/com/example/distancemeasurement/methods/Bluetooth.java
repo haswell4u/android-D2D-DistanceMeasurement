@@ -84,7 +84,7 @@ public class Bluetooth {
     private String createFindUserMessage(String id) {
         StringBuffer str = new StringBuffer(mMeasurementService
                 .getString(R.string.message_find_new_user_ble));
-        str.insert(Constants.OFFSET_MESSAGE_FIND_NEW_USER, id);
+        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
         return str.toString();
     }
 
