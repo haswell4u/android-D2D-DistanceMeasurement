@@ -12,7 +12,8 @@
     <string name="title_settings">SETTINGS</string>
     <string name="title_back">BACK</string>
 
-    <string name="category_measurement">Measurement</string>
+    <string name="category_general">General</string>
+    <string name="category_measurement">Measurement Methods</string>
     <string name="category_wifi_aware">WiFi Aware</string>
     <string name="category_wifi_rtt">WiFi RTT</string>
     <string name="category_logging">Logging</string>
@@ -21,8 +22,9 @@
     <string name="title_wifi_rtt">Use WiFi RTT</string>
     <string name="title_ble">Use BLE</string>
     <string name="title_id">Your ID</string>
+    <string name="title_refresh">Refresh Interval (ms)</string>
     <string name="title_interval">Measurement Interval (ms)</string>
-    <string name="title_timeout">Measurement Timeout (ms)</string>
+    <string name="title_timeout">Device Remove Timeout (ms)</string>
     <string name="title_file">Write Events to File</string>
     <string name="title_filename">Use Specific File Names</string>
     <string name="title_filename_text">File Name</string>

@@ -1,4 +1,4 @@
-package com.example.distancemeasurement;
+package com.example.distancemeasurement.views;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.net.wifi.aware.WifiAwareManager;
 import android.net.wifi.rtt.WifiRttManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +26,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
+
+import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.Device;
+import com.example.distancemeasurement.MeasurementService;
+import com.example.distancemeasurement.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -241,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for (Device device: removeList)
             mAdapter.remove(device);
+        // Todo (Delete devices from the list in service)
     }
 
     private void actionStopButton() {

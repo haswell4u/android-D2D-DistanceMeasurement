@@ -31,6 +31,11 @@ public class Device implements Serializable {
         this.rssi_ble = rssi_ble;
     }
 
+    public Device(String id, long time) {
+        this.id = id;
+        this.time = time;
+    }
+
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
@@ -49,7 +54,7 @@ public class Device implements Serializable {
 
         if (device.rssi_ble != Integer.MAX_VALUE)
             this.rssi_ble = device.rssi_ble;
-        else {
+        else if (device.dist != Integer.MAX_VALUE) {
             this.dist = device.dist;
             this.std = device.std;
             this.nam = device.nam;

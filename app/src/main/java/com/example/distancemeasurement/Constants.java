@@ -30,6 +30,8 @@ public class Constants {
     public static final int INTENT_CONTENTS_DEFAULT_INT = -1;
 
     public static final String WIFI_AWARE_SERVICE_NAME = "Test";
+    public static final int WIFI_AWARE_CHECK_ALIVE_ID = 2000;
+    public static final String WIFI_AWARE_CHECK_ALIVE_MESSAGE = "CheckAlive";
 
     public static final int OFFSET_MESSAGE_FIND_NEW_USER = 12;
 
@@ -45,6 +47,8 @@ public class Constants {
     public static final boolean PREFERENCES_DEFAULT_BLE = false;
     public static final String PREFERENCES_NAME_DEVICE_ID = "id";
     public static final String PREFERENCES_DEFAULT_DEVICE_ID = "SNQz4YoYRL";
+    public static final String PREFERENCES_NAME_REFRESH = "refresh";
+    public static final String PREFERENCES_DEFAULT_REFRESH = "-1";
     public static final String PREFERENCES_NAME_INTERVAL = "interval";
     public static final String PREFERENCES_DEFAULT_INTERVAL = "-1";
     public static final String PREFERENCES_NAME_TIMEOUT = "timeout";

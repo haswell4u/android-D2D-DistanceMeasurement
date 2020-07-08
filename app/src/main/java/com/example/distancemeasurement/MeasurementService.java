@@ -12,9 +12,13 @@ import android.os.IBinder;
 
 import androidx.preference.PreferenceManager;
 
+import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.Device;
+import com.example.distancemeasurement.R;
 import com.example.distancemeasurement.methods.Bluetooth;
 import com.example.distancemeasurement.methods.WifiAware;
 import com.example.distancemeasurement.methods.WifiRtt;
+import com.example.distancemeasurement.views.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +54,9 @@ public class MeasurementService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isInitialized) {
+            if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_AWARE,
+                    Constants.PREFERENCES_DEFAULT_WIFI_AWARE))
+                mWifiAware.checkAlive();
             if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_RTT,
                     Constants.PREFERENCES_DEFAULT_WIFI_RTT))
                 mWifiRtt = new WifiRtt(this);

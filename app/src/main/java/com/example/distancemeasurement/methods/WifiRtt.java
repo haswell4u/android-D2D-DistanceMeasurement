@@ -1,15 +1,12 @@
 package com.example.distancemeasurement.methods;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.aware.PeerHandle;
 import android.net.wifi.rtt.RangingRequest;
 import android.net.wifi.rtt.RangingResult;
 import android.net.wifi.rtt.RangingResultCallback;
 import android.net.wifi.rtt.WifiRttManager;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
@@ -61,17 +58,19 @@ public class WifiRtt {
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (mMeasurementService.mPeerHandleList.size() != 0) {
-                    if (!isMeasuring) {
-                        isMeasuring = true;
-                        try {
-                            mMeasurementService.sendMessage(mMeasurementService
-                                    .getString(R.string.message_wifi_rtt_ranging_start));
-                            mWifiRttManager.startRanging(createRequest(),
-                                    mMeasurementService.getMainExecutor(), mRangingCallback);
-                        } catch (SecurityException e) {
-                            mMeasurementService.sendError(mMeasurementService
-                                    .getString(R.string.message_wifi_rtt_state_changed));
+                synchronized (mMeasurementService.mPeerHandleList) {
+                    if (mMeasurementService.mPeerHandleList.size() != 0) {
+                        if (!isMeasuring) {
+                            isMeasuring = true;
+                            try {
+                                mMeasurementService.sendMessage(mMeasurementService
+                                        .getString(R.string.message_wifi_rtt_ranging_start));
+                                mWifiRttManager.startRanging(createRequest(),
+                                        mMeasurementService.getMainExecutor(), mRangingCallback);
+                            } catch (SecurityException e) {
+                                mMeasurementService.sendError(mMeasurementService
+                                        .getString(R.string.message_wifi_rtt_state_changed));
+                            }
                         }
                     }
                 }
@@ -80,8 +79,12 @@ public class WifiRtt {
     }
 
     private Device createDevice(RangingResult rangingResult) {
-        String id = getKeyByValue(mMeasurementService.mPeerHandleList,
-                rangingResult.getPeerHandle());
+        String id = "";
+
+        synchronized (mMeasurementService.mPeerHandleList) {
+            id = getKeyByValue(mMeasurementService.mPeerHandleList,
+                    rangingResult.getPeerHandle());
+        }
 
         long time = System.currentTimeMillis();
         float dist = rangingResult.getDistanceMm() / 1000f;
@@ -98,8 +101,11 @@ public class WifiRtt {
     private RangingRequest createRequest() {
         RangingRequest.Builder builder = new RangingRequest.Builder();
 
-        for (Map.Entry<String, PeerHandle> entry : mMeasurementService.mPeerHandleList.entrySet())
-            builder.addWifiAwarePeer(entry.getValue());
+        synchronized (mMeasurementService.mPeerHandleList) {
+            for (Map.Entry<String, PeerHandle> entry :
+                    mMeasurementService.mPeerHandleList.entrySet())
+                builder.addWifiAwarePeer(entry.getValue());
+        }
 
         return builder.build();
     }

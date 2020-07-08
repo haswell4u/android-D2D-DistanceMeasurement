@@ -1,4 +1,4 @@
-package com.example.distancemeasurement;
+package com.example.distancemeasurement.views;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
+
+import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

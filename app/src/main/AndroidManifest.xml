@@ -19,7 +19,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".views.MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +29,7 @@
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".views.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/settings_activity_name">
         </activity>

@@ -1,7 +1,6 @@
 package com.example.distancemeasurement.methods;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.aware.AttachCallback;
 import android.net.wifi.aware.DiscoverySessionCallback;
@@ -12,16 +11,20 @@ import android.net.wifi.aware.SubscribeConfig;
 import android.net.wifi.aware.SubscribeDiscoverySession;
 import android.net.wifi.aware.WifiAwareManager;
 import android.net.wifi.aware.WifiAwareSession;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import com.example.distancemeasurement.Constants;
+import com.example.distancemeasurement.Device;
 import com.example.distancemeasurement.MeasurementService;
 import com.example.distancemeasurement.R;
 import com.example.distancemeasurement.Utils;
 
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WifiAware {
 
@@ -35,6 +38,8 @@ public class WifiAware {
     private PublishDiscoverySession mPublishDiscoverySession;
     private SubscribeDiscoverySession mSubscribeDiscoverySession;
 
+    private Timer mTimer;
+
     public WifiAware(MeasurementService service) {
         mMeasurementService = service;
 
@@ -42,6 +47,8 @@ public class WifiAware {
 
         mWifiAwareManager = (WifiAwareManager) mMeasurementService
                 .getSystemService(Context.WIFI_AWARE_SERVICE);
+
+        mTimer = new Timer();
 
         obtainSession();
     }
@@ -75,7 +82,18 @@ public class WifiAware {
             @Override
             public void onPublishStarted(PublishDiscoverySession session) {
                 mPublishDiscoverySession = session;
-                mMeasurementService.sendMessage(mMeasurementService.getString(R.string.message_publish_service));
+                mMeasurementService.sendMessage(mMeasurementService
+                        .getString(R.string.message_publish_service));
+            }
+
+            @Override
+            public void onMessageReceived(PeerHandle peerHandle, byte[] message) {
+                super.onMessageReceived(peerHandle, message);
+                mPublishDiscoverySession.sendMessage(peerHandle,
+                        Constants.WIFI_AWARE_CHECK_ALIVE_ID,
+                        Utils.dataEncoding(mSharedPreferences
+                                .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
+                                        Constants.PREFERENCES_DEFAULT_DEVICE_ID)));
             }
         }, null);
     }
@@ -106,7 +124,42 @@ public class WifiAware {
                         mMeasurementService.mPeerHandleList.replace(id, peerHandle);
                 }
             }
+
+            @Override
+            public void onMessageReceived(PeerHandle peerHandle, byte[] message) {
+                super.onMessageReceived(peerHandle, message);
+                ArrayList<Device> list = new ArrayList<Device>();
+                list.add(createDevice(Utils.dataDecoding(message)));
+                mMeasurementService.sendDevice(list);
+            }
         }, null);
+    }
+
+    public void checkAlive() {
+        // Todo (This interval must be less than timeout)
+        long interval = Long.parseLong(mSharedPreferences
+                .getString(Constants.PREFERENCES_NAME_REFRESH,
+                        Constants.PREFERENCES_DEFAULT_REFRESH));
+
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                synchronized (mMeasurementService.mPeerHandleList) {
+                    for (String id : mMeasurementService.mPeerHandleList.keySet())
+                        mSubscribeDiscoverySession.sendMessage(
+                                mMeasurementService.mPeerHandleList.get(id),
+                                Constants.WIFI_AWARE_CHECK_ALIVE_ID,
+                                Utils.dataEncoding(mSharedPreferences
+                                        .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
+                                                Constants.PREFERENCES_DEFAULT_DEVICE_ID)));
+                }
+            }
+        }, interval, interval);
+    }
+
+    public Device createDevice(String id) {
+        long time = System.currentTimeMillis();
+        return new Device(id, time);
     }
 
     private String createFindNewUserMessage(String id) {
@@ -117,6 +170,7 @@ public class WifiAware {
     }
 
     public void close() {
+        mTimer.cancel();
         if (mSubscribeDiscoverySession != null)
             mSubscribeDiscoverySession.close();
         if (mPublishDiscoverySession != null)

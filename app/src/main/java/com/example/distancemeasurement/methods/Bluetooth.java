@@ -12,9 +12,7 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -61,7 +59,6 @@ public class Bluetooth {
 
             String id = Utils.dataDecoding(result.getScanRecord()
                     .getServiceData(Constants.BLE_SERVICE_UUID));
-
 
             ArrayList<Device> list = new ArrayList<Device>();
             list.add(createDevice(id, result));
