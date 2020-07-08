@@ -31,7 +31,6 @@ public class Constants {
 
     public static final String WIFI_AWARE_SERVICE_NAME = "Test";
     public static final int WIFI_AWARE_CHECK_ALIVE_ID = 2000;
-    public static final String WIFI_AWARE_CHECK_ALIVE_MESSAGE = "CheckAlive";
 
     public static final int OFFSET_MESSAGE_FIND_NEW_USER = 12;
 
@@ -59,6 +58,8 @@ public class Constants {
     public static final boolean PREFERENCES_DEFAULT_FILENAME = false;
     public static final String PREFERENCES_NAME_FILENAME_TEXT = "filename_text";
     public static final String PREFERENCES_DEFAULT_FILENAME_TEXT = "SNQz4YoYRL";
+
+    public static final double INTERVAL_DEPENDENCY_RATIO = 0.5;
 
     public static final String FILE_WRITE_FOLDER = "/Events";
     public static final String FILE_WRITE_EXTENSION = ".txt";

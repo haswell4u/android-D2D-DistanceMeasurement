@@ -77,6 +77,10 @@ public class SettingsActivity extends AppCompatActivity {
             setInputType(Constants.PREFERENCES_NAME_DEVICE_ID, InputType.TYPE_CLASS_TEXT);
             setInputType(Constants.PREFERENCES_NAME_INTERVAL, InputType.TYPE_CLASS_NUMBER);
             setInputType(Constants.PREFERENCES_NAME_TIMEOUT, InputType.TYPE_CLASS_NUMBER);
+            setInputType(Constants.PREFERENCES_NAME_REFRESH, InputType.TYPE_CLASS_NUMBER);
+
+            setIntervalDependency(Constants.PREFERENCES_NAME_TIMEOUT,
+                    Constants.PREFERENCES_NAME_REFRESH, Constants.PREFERENCES_NAME_INTERVAL);
         }
 
         private void setDisable(String feature, String preference, String message) {
@@ -88,6 +92,65 @@ public class SettingsActivity extends AppCompatActivity {
                 switchPreferenceCompat.setSummary(message);
                 switchPreferenceCompat.setEnabled(false);
             }
+        }
+
+        private void setIntervalDependency(String iPreference,
+                                           String dPreference1, String dPreference2) {
+            final EditTextPreference iEditTextPreference = getPreferenceManager()
+                    .findPreference(iPreference);
+            final EditTextPreference dEditTextPreference1 = getPreferenceManager()
+                    .findPreference(dPreference1);
+            final EditTextPreference dEditTextPreference2 = getPreferenceManager()
+                    .findPreference(dPreference2);
+            iEditTextPreference
+                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            if (Integer.parseInt(dEditTextPreference1.getText()) >
+                                    (int) (Integer.parseInt((String) newValue)
+                                            * Constants.INTERVAL_DEPENDENCY_RATIO))
+                                dEditTextPreference1
+                                        .setText(Integer.toString((int) ((Integer
+                                                .parseInt((String) newValue))
+                                                * Constants.INTERVAL_DEPENDENCY_RATIO)));
+                            if (Integer.parseInt(dEditTextPreference2.getText()) >
+                                    (int) (Integer.parseInt((String) newValue)
+                                            * Constants.INTERVAL_DEPENDENCY_RATIO))
+                                dEditTextPreference2
+                                        .setText(Integer.toString((int) ((Integer
+                                                .parseInt((String) newValue))
+                                                * Constants.INTERVAL_DEPENDENCY_RATIO)));
+                            return true;
+                        }
+                    });
+            dEditTextPreference1
+                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            if (Integer.parseInt((String) newValue) >
+                                    (int) (Integer.parseInt(iEditTextPreference.getText())
+                                            * Constants.INTERVAL_DEPENDENCY_RATIO))
+                                iEditTextPreference
+                                        .setText(Integer.toString((int) ((Integer
+                                                .parseInt((String) newValue))
+                                                / Constants.INTERVAL_DEPENDENCY_RATIO)));
+                            return true;
+                        }
+                    });
+            dEditTextPreference2
+                    .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            if (Integer.parseInt((String) newValue) >
+                                    (int) (Integer.parseInt(iEditTextPreference.getText())
+                                            * Constants.INTERVAL_DEPENDENCY_RATIO))
+                                iEditTextPreference
+                                        .setText(Integer.toString((int) ((Integer
+                                                .parseInt((String) newValue))
+                                                / Constants.INTERVAL_DEPENDENCY_RATIO)));
+                            return true;
+                        }
+                    });
         }
 
         private void setDisableDependency(String iPreference, String dPreference) {

@@ -48,7 +48,7 @@
             app:key="interval"
             app:title="@string/title_interval"
             app:useSimpleSummaryProvider="true"
-            app:defaultValue="3000" />
+            app:defaultValue="5000" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_logging">
