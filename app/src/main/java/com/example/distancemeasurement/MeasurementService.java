@@ -43,11 +43,11 @@ public class MeasurementService extends Service {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_AWARE,
-                Constants.PREFERENCES_DEFAULT_WIFI_AWARE))
+                Constants.PREFERENCES_DEFAULT_BOOLEAN))
             mWifiAware = new WifiAware(this);
 
         if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_BLE,
-                Constants.PREFERENCES_DEFAULT_BLE))
+                Constants.PREFERENCES_DEFAULT_BOOLEAN))
             mBluetooth = new Bluetooth(this);
     }
 
@@ -55,13 +55,13 @@ public class MeasurementService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isInitialized) {
             if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_AWARE,
-                    Constants.PREFERENCES_DEFAULT_WIFI_AWARE))
+                    Constants.PREFERENCES_DEFAULT_BOOLEAN))
                 mWifiAware.checkAlive();
             if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_WIFI_RTT,
-                    Constants.PREFERENCES_DEFAULT_WIFI_RTT))
+                    Constants.PREFERENCES_DEFAULT_BOOLEAN))
                 mWifiRtt = new WifiRtt(this);
             if (mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_BLE,
-                    Constants.PREFERENCES_DEFAULT_BLE))
+                    Constants.PREFERENCES_DEFAULT_BOOLEAN))
                 mBluetooth.startBluetoothLE();
         }
         else

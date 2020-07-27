@@ -41,14 +41,14 @@ public class Device implements Serializable {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(id + ": ");
+        sb.append("Device ID: " + id + "\n");
 
-        if (dist != Integer.MAX_VALUE)
-            sb.append(String.format("%.2f", dist) + "m ");
-        if (rssi_ble != Integer.MAX_VALUE)
-            sb.append("(BLE RSSI = " + rssi_ble + ")");
+        if (fromRTT(this))
+            sb.append("Distance measured by WiFi RTT: " + String.format("%.2f", dist) + "m" + "\n");
+        if (fromBLE(this))
+            sb.append("RSSI measured by BLE: " + rssi_ble + "\n");
 
-        return sb.toString();
+        return sb.substring(0, sb.length() - 1);
     }
 
     @Override
@@ -57,30 +57,41 @@ public class Device implements Serializable {
         return this.id.equals(newDevice.id);
     }
 
+    private boolean fromRTT(Device device) {
+        return device.dist != Integer.MAX_VALUE;
+    }
+
+    private boolean fromBLE(Device device) {
+        return device.rssi_ble != Integer.MAX_VALUE;
+    }
+
     public void update(Device device) {
         this.time = device.time;
 
-        if (device.rssi_ble != Integer.MAX_VALUE)
-            this.rssi_ble = device.rssi_ble;
-        else if (device.dist != Integer.MAX_VALUE) {
+        if (fromRTT(device)) {
             this.dist = device.dist;
             this.std = device.std;
             this.nam = device.nam;
             this.nsm = device.nsm;
             this.rssi = device.rssi;
         }
+        else if (fromBLE(device))
+            this.rssi_ble = device.rssi_ble;
     }
 
     public String print() {
         StringBuffer sb = new StringBuffer();
         sb.append("[" + new SimpleDateFormat("MM/dd HH:mm:ss")
-                .format(new Date(time)) + "] : " + id);
+                .format(new Date(time)) + "] - Device ID: " + id);
 
-        if (dist != Integer.MAX_VALUE)
-            sb.append(" " + dist + " " + std + " " + nam + " " + nsm + " " + rssi);
-
-        if (rssi_ble != Integer.MAX_VALUE)
-            sb.append(" " + rssi_ble);
+        if (fromRTT(this))
+            sb.append(", Distance: " + dist
+                    + ", Standard deviation: " + std
+                    + ", # of Attempted Measurements: " + nam
+                    + ", # of Successful Measurements: " + nsm
+                    + ", RSSI from WiFi RTT: " + rssi);
+        if (fromBLE(this))
+            sb.append(", RSSI from BLE: " + rssi_ble);
 
         return sb.toString();
     }

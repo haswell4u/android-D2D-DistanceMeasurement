@@ -60,13 +60,13 @@ public class SettingsActivity extends AppCompatActivity {
 
             setDisable(PackageManager.FEATURE_WIFI_AWARE,
                     Constants.PREFERENCES_NAME_WIFI_AWARE,
-                    getString(R.string.error_message_wifi_aware));
+                    getString(R.string.error_wifi_aware_support));
             setDisable(PackageManager.FEATURE_WIFI_RTT,
                     Constants.PREFERENCES_NAME_WIFI_RTT,
-                    getString(R.string.error_message_wifi_rtt));
+                    getString(R.string.error_wifi_rtt_support));
             setDisable(PackageManager.FEATURE_BLUETOOTH_LE,
                     Constants.PREFERENCES_NAME_BLE,
-                    getString(R.string.error_message_ble));
+                    getString(R.string.error_ble_support));
 
             setDisableDependency(Constants.PREFERENCES_NAME_WIFI_AWARE,
                     Constants.PREFERENCES_NAME_WIFI_RTT);

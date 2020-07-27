@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (grantResults.length != 0) {
                 for (int grantResult : grantResults) {
                     if (grantResult == PackageManager.PERMISSION_DENIED)
-                        closeApp(getString(R.string.error_message_permission_denied));
+                        closeApp(getString(R.string.error_permission_denied));
                 }
             }
         }
@@ -183,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.initButton) {
             if (!mSharedPreferences.getString(Constants.PREFERENCES_NAME_DEVICE_ID,
-                    Constants.PREFERENCES_DEFAULT_DEVICE_ID)
-                    .equals(Constants.PREFERENCES_DEFAULT_DEVICE_ID)) {
+                    Constants.PREFERENCES_DEFAULT_STRING)
+                    .equals(Constants.PREFERENCES_DEFAULT_STRING)) {
                 mInitButton.setEnabled(false);
                 if (isFileWriteMode())
                     getPrintWriter();
@@ -197,8 +197,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mStopButton.setEnabled(true);
             }
             else {
-                Toast.makeText(this, getString(R.string.error_message_set_id),
+                Toast.makeText(this, getString(R.string.error_set_id),
                         Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
             }
         }
         else if (v.getId() == R.id.startButton) {
@@ -260,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < mAdapter.getCount(); i++) {
             if (currTime - mAdapter.getItem(i).getTime() > Long.parseLong(mSharedPreferences
                     .getString(Constants.PREFERENCES_NAME_TIMEOUT,
-                            Constants.PREFERENCES_DEFAULT_TIMEOUT)))
+                            Constants.PREFERENCES_DEFAULT_STRING)))
                 removeList.add(mAdapter.getItem(i));
         }
 
@@ -275,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String createRemoveUserMessage(String id) {
         StringBuffer str = new StringBuffer(getString(R.string.message_device_remove));
-        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
+        str.insert(Constants.OFFSET_MESSAGE_DEVICE_FOUND_REMOVED, id);
         return str.toString();
     }
 
@@ -331,12 +332,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean isFileWriteMode() {
         return mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_FILE,
-                Constants.PREFERENCES_DEFAULT_FILE);
+                Constants.PREFERENCES_DEFAULT_BOOLEAN);
     }
 
     private boolean hasSpecificFileName() {
         return mSharedPreferences.getBoolean(Constants.PREFERENCES_NAME_FILENAME,
-                Constants.PREFERENCES_DEFAULT_FILENAME);
+                Constants.PREFERENCES_DEFAULT_BOOLEAN);
     }
 
     private void WriteToFile(Device device) {
@@ -358,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (hasSpecificFileName()) {
             filename = mSharedPreferences
                     .getString(Constants.PREFERENCES_NAME_FILENAME_TEXT,
-                            Constants.PREFERENCES_DEFAULT_FILENAME_TEXT)
+                            Constants.PREFERENCES_DEFAULT_STRING)
                     + Constants.FILE_WRITE_EXTENSION;
         }
 
@@ -374,13 +375,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else {
                 actionStopButton();
-                Toast.makeText(this, getString(R.string.message_io_exception),
+                Toast.makeText(this, getString(R.string.message_pw_io_exception),
                         Toast.LENGTH_SHORT).show();
             }
         }
         catch (FileNotFoundException e) {
             actionStopButton();
-            Toast.makeText(this, getString(R.string.message_io_exception),
+            Toast.makeText(this, getString(R.string.message_pw_io_exception),
                     Toast.LENGTH_SHORT).show();
         }
     }

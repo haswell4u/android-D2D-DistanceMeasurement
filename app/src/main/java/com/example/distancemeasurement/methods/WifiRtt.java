@@ -53,7 +53,7 @@ public class WifiRtt {
     public void startRangingRequest() {
         long interval = Long.parseLong(mSharedPreferences
                 .getString(Constants.PREFERENCES_NAME_INTERVAL,
-                        Constants.PREFERENCES_DEFAULT_INTERVAL));
+                        Constants.PREFERENCES_DEFAULT_STRING));
 
         mTimer.schedule(new TimerTask() {
             @Override

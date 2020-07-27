@@ -60,7 +60,8 @@ public class WifiAware {
                 public void onAttached(WifiAwareSession session) {
                     super.onAttached(session);
                     mWifiAwareSession = session;
-                    mMeasurementService.sendMessage(mMeasurementService.getString(R.string.message_obtain_session));
+                    mMeasurementService.sendMessage(mMeasurementService
+                            .getString(R.string.message_wifi_aware_obtain_session));
                     publishService();
                     subscribeService();
                 }
@@ -74,7 +75,7 @@ public class WifiAware {
         PublishConfig config = new PublishConfig.Builder()
                 .setServiceSpecificInfo(Utils.dataEncoding(mSharedPreferences
                         .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
-                                Constants.PREFERENCES_DEFAULT_DEVICE_ID)))
+                                Constants.PREFERENCES_DEFAULT_STRING)))
                 .setServiceName(Constants.WIFI_AWARE_SERVICE_NAME)
                 .build();
 
@@ -83,7 +84,7 @@ public class WifiAware {
             public void onPublishStarted(PublishDiscoverySession session) {
                 mPublishDiscoverySession = session;
                 mMeasurementService.sendMessage(mMeasurementService
-                        .getString(R.string.message_publish_service));
+                        .getString(R.string.message_wifi_aware_publish_service));
             }
 
             @Override
@@ -93,7 +94,7 @@ public class WifiAware {
                         Constants.WIFI_AWARE_CHECK_ALIVE_ID,
                         Utils.dataEncoding(mSharedPreferences
                                 .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
-                                        Constants.PREFERENCES_DEFAULT_DEVICE_ID)));
+                                        Constants.PREFERENCES_DEFAULT_STRING)));
             }
         }, null);
     }
@@ -108,7 +109,7 @@ public class WifiAware {
             public void onSubscribeStarted(SubscribeDiscoverySession session) {
                 mSubscribeDiscoverySession = session;
                 mMeasurementService.sendMessage(mMeasurementService
-                        .getString(R.string.message_subscribe_service));
+                        .getString(R.string.message_wifi_aware_subscribe_service));
             }
 
             @Override
@@ -139,7 +140,7 @@ public class WifiAware {
     public void checkAlive() {
         long interval = Long.parseLong(mSharedPreferences
                 .getString(Constants.PREFERENCES_NAME_REFRESH,
-                        Constants.PREFERENCES_DEFAULT_REFRESH));
+                        Constants.PREFERENCES_DEFAULT_STRING));
 
         mTimer.schedule(new TimerTask() {
             @Override
@@ -151,7 +152,7 @@ public class WifiAware {
                                 Constants.WIFI_AWARE_CHECK_ALIVE_ID,
                                 Utils.dataEncoding(mSharedPreferences
                                         .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
-                                                Constants.PREFERENCES_DEFAULT_DEVICE_ID)));
+                                                Constants.PREFERENCES_DEFAULT_STRING)));
                 }
             }
         }, interval, interval);
@@ -164,8 +165,9 @@ public class WifiAware {
 
     private String createFindUserMessage(String id) {
         StringBuffer str = new StringBuffer(mMeasurementService
-                .getString(R.string.message_find_new_user));
-        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
+                .getString(R.string.message_device_find));
+        str.insert(Constants.OFFSET_MESSAGE_DEVICE_FOUND_REMOVED, id);
+        str.append(" (WiFi Aware)");
         return str.toString();
     }
 
@@ -177,7 +179,8 @@ public class WifiAware {
             mPublishDiscoverySession.close();
         if (mWifiAwareSession != null) {
             mWifiAwareSession.close();
-            mMeasurementService.sendMessage(mMeasurementService.getString(R.string.message_close_session));
+            mMeasurementService.sendMessage(mMeasurementService
+                    .getString(R.string.message_wifi_aware_close_session));
         }
     }
 }

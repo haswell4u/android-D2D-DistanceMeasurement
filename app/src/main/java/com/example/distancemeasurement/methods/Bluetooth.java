@@ -48,7 +48,7 @@ public class Bluetooth {
         public void onStartFailure(int errorCode) {
             super.onStartFailure(errorCode);
             mMeasurementService.sendError(mMeasurementService
-                    .getString(R.string.error_message_ble_adv_fail));
+                    .getString(R.string.error_ble_adv_fail));
         }
     };
 
@@ -71,22 +71,9 @@ public class Bluetooth {
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
             mMeasurementService.sendError(mMeasurementService
-                    .getString(R.string.error_message_ble_scn_fail));
+                    .getString(R.string.error_ble_scn_fail));
         }
     };
-
-    public Device createDevice(String id, ScanResult result) {
-        long time = System.currentTimeMillis();
-        int rssi_ble = result.getRssi();
-        return new Device(id, time, rssi_ble);
-    }
-
-    private String createFindUserMessage(String id) {
-        StringBuffer str = new StringBuffer(mMeasurementService
-                .getString(R.string.message_find_new_user_ble));
-        str.insert(Constants.OFFSET_MESSAGE_FIND_REMOVE_USER, id);
-        return str.toString();
-    }
 
     public Bluetooth(MeasurementService service) {
         mMeasurementService = service;
@@ -100,6 +87,20 @@ public class Bluetooth {
         checkCondition();
     }
 
+    public Device createDevice(String id, ScanResult result) {
+        long time = System.currentTimeMillis();
+        int rssi_ble = result.getRssi();
+        return new Device(id, time, rssi_ble);
+    }
+
+    private String createFindUserMessage(String id) {
+        StringBuffer str = new StringBuffer(mMeasurementService
+                .getString(R.string.message_device_find));
+        str.insert(Constants.OFFSET_MESSAGE_DEVICE_FOUND_REMOVED, id);
+        str.append(" (BLE)");
+        return str.toString();
+    }
+
     private void checkCondition() {
         if (mBluetoothAdapter != null)
             if (mBluetoothAdapter.isEnabled())
@@ -107,17 +108,17 @@ public class Bluetooth {
                     mBluetoothLeAdvertiser = mBluetoothAdapter.getBluetoothLeAdvertiser();
                     mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
                     mMeasurementService.sendMessage(mMeasurementService
-                            .getString(R.string.message_ble_ready));
+                            .getString(R.string.message_ble_init));
                 }
                 else
                     mMeasurementService.sendError(mMeasurementService
-                            .getString(R.string.error_message_ble_adv));
+                            .getString(R.string.error_ble_adv_support));
             else
                 mMeasurementService.sendError(mMeasurementService
-                        .getString(R.string.error_message_ble_turn_on));
+                        .getString(R.string.error_ble_off));
         else
             mMeasurementService.sendError(mMeasurementService
-                    .getString(R.string.error_message_ble));
+                    .getString(R.string.error_ble_support));
     }
 
     public void startBluetoothLE() {
@@ -141,8 +142,7 @@ public class Bluetooth {
 
         dataBuilder.addServiceData(Constants.BLE_SERVICE_UUID,
                 Utils.dataEncoding(mSharedPreferences
-                        .getString(Constants.PREFERENCES_NAME_DEVICE_ID,
-                                Constants.PREFERENCES_DEFAULT_DEVICE_ID)));
+                        .getString(Constants.PREFERENCES_NAME_DEVICE_ID, "")));
 
         return dataBuilder.build();
     }

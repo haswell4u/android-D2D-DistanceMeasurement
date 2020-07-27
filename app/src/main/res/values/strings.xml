@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DistanceMeasurement</string>
 
-    <string name="settings_activity_name">Settings</string>
+    <string name="activity_name_settings">Settings</string>
 
     <string name="title_devices">Devices</string>
     <string name="title_events">Events</string>
@@ -33,31 +33,30 @@
     <string name="notification_title">This device is measuring distance</string>
     <string name="notification_text">Tab to turn off measuring</string>
 
-    <string name="error_message_permission_denied">Permission denied</string>
-    <string name="error_message_wifi_aware">This device does not support WiFi Aware.</string>
-    <string name="error_message_wifi_rtt">This device does not support WiFi RTT.</string>
-    <string name="error_message_ble">This device does not support BLE.</string>
-    <string name="error_message_ble_turn_on">Turn on Bluetooth.</string>
-    <string name="error_message_ble_adv">Bluetooth Advertisements are not supported.</string>
-    <string name="error_message_ble_adv_fail">Bluetooth Advertisements failed to start.</string>
-    <string name="error_message_ble_scn_fail">Bluetooth Scanning failed to start.</string>
-    <string name="error_message_set_id">Set your ID.</string>
+    <string name="error_permission_denied">Permission denied.</string>
+    <string name="error_wifi_aware_support">This device does not support WiFi Aware.</string>
+    <string name="error_wifi_rtt_support">This device does not support WiFi RTT.</string>
+    <string name="error_ble_support">This device does not support BLE.</string>
+    <string name="error_ble_off">Please, turn on Bluetooth.</string>
+    <string name="error_ble_adv_support">Bluetooth advertisements are not supported.</string>
+    <string name="error_ble_adv_fail">Bluetooth advertisements failed to start.</string>
+    <string name="error_ble_scn_fail">Bluetooth scanning failed to start.</string>
+    <string name="error_set_id">Set your ID.</string>
 
-    <string name="message_obtain_session">Obtained a session.</string>
-    <string name="message_close_session">Closed a session.</string>
-    <string name="message_publish_service">Published a service.</string>
-    <string name="message_subscribe_service">Subscribed to a session.</string>
-    <string name="message_find_new_user">A user (ID: ) is found.</string>
-    <string name="message_device_remove">A user (ID: ) is removed.</string>
+    <string name="message_wifi_aware_obtain_session">Obtained a session.</string>
+    <string name="message_wifi_aware_close_session">Closed a session.</string>
+    <string name="message_wifi_aware_publish_service">Published a service.</string>
+    <string name="message_wifi_aware_subscribe_service">Subscribed to a session.</string>
     <string name="message_wifi_aware_state_changed">WiFi Aware is not currently available.</string>
     <string name="message_wifi_rtt_state_changed">WiFi RTT is not currently available.</string>
-    <string name="message_wifi_rtt_ranging_start">WiFi RTT Ranging Start</string>
-    <string name="message_wifi_rtt_ranging_failure">WiFi RTT Ranging Failure</string>
-    <string name="message_wifi_rtt_ranging_status_success">WiFi RTT Ranging Status Success</string>
-    <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT Ranging Status Fail</string>
-    <string name="message_ble_ready">BLE Ready</string>
-    <string name="message_find_new_user_ble">A user (ID: ) is found. (BLE)</string>
-    <string name="message_ble_adv_stop">Stopping Advertising.</string>
-    <string name="message_ble_scn_stop">Stopping Scanning.</string>
-    <string name="message_io_exception">PrintWriter is not currently available.</string>
+    <string name="message_wifi_rtt_ranging_start">WiFi RTT ranging start</string>
+    <string name="message_wifi_rtt_ranging_failure">WiFi RTT ranging failure</string>
+    <string name="message_wifi_rtt_ranging_status_success">WiFi RTT ranging status success</string>
+    <string name="message_wifi_rtt_ranging_status_fail">WiFi RTT ranging status fail</string>
+    <string name="message_ble_init">BLE initialization complete</string>
+    <string name="message_ble_adv_stop">Stopping advertising.</string>
+    <string name="message_ble_scn_stop">Stopping scanning.</string>
+    <string name="message_device_find">A device (ID: ) is found.</string>
+    <string name="message_device_remove">A device (ID: ) is removed.</string>
+    <string name="message_pw_io_exception">PrintWriter is not currently available.</string>
 </resources>

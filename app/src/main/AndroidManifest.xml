@@ -31,7 +31,7 @@
         <activity
             android:name=".views.SettingsActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/settings_activity_name">
+            android:label="@string/activity_name_settings">
         </activity>
 
         <service
