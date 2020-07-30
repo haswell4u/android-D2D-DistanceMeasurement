@@ -24,7 +24,7 @@
     <string name="title_id">Your ID</string>
     <string name="title_refresh">Refresh Interval (ms)</string>
     <string name="title_interval">Measurement Interval (ms)</string>
-    <string name="title_timeout">Device Remove Timeout (ms)</string>
+    <string name="title_timeout">Device Removal Time (ms)</string>
     <string name="title_file">Write Events to File</string>
     <string name="title_filename">Use Specific File Names</string>
     <string name="title_filename_text">File Name</string>
