@@ -1,7 +1,7 @@
 # 1. Introduction
 
 When researching in the field of mobile systems, depending on the research topic, it is sometimes necessary to measure the distance among mobile devices.
-This application is designed for experiments measuring distances among Android devices in such cases.
+**This application is designed for experiments measuring distances among Android devices** in such cases.
 It can measure the distances using modules such as [WiFi RTT][] over [WiFi Aware][], or get RSSI offered by [BLE][].
 (You need to convert the RSSI to distance information by applying the specific formula you want to test.)
 
@@ -17,20 +17,20 @@ It has been confirmed that all modules work successfully in Google Pixel 3.
 
 First, allow necessary permissions to use implemented modules, and set the device ID.
 
-**IMPORTANT**: All device IDs must be unique. (The function to automatically filter duplicate IDs is not available in this version.)
+***IMPORTANT***: All device IDs must be unique. (The function to automatically filter duplicate IDs is not available in this version.)
 
 ## 3.1 Main Screen
 
 There are two display parts and three buttons on the main screen.
 
-**Display Parts**
-- Devices: displays the measured distance or RSSI information from the discovered device.
-- Events: displays all events that occur during operation. (e.g., device discovery, distance measurement success/failure)
+***Display Parts***
+- **Devices** - displays the measured distance or RSSI information from the discovered device.
+- **Events** - displays all events that occur during operation. (e.g., device discovery, distance measurement success/failure)
 
-**Buttons**
-- INIT: initializes the selected modules (can be selected in the settings screen) before distance measurement.
-- START: starts distance measurement via selected modules. This operation runs as a foreground service - i.e., the measure is possible regardless of the screen off.
-- STOP: stops all modules and measurement.
+***Buttons***
+- **INIT** - initializes the selected modules (can be selected in the settings screen) before distance measurement.
+- **START** - starts distance measurement via selected modules. This operation runs as a foreground service - i.e., the measure is possible regardless of the screen off.
+- **STOP** - stops all modules and measurement.
 
 Each Button is activated/deactivated depending on the situation.
 
@@ -46,22 +46,22 @@ After that, go back to the main screen and initialize and start for measurement.
 
 See below for other detailed settings.
 
-**Options**
-- General
-  - Your ID: this ID will be used to identify the device.
-  - Device Removal Time (ms): if the discovered device is not updated for the set time, the device is removed from the list.
-- Measurement Methods
-  - Use WiFi Aware: enables WiFi Aware. When WiFi Aware is used alone, only the existence of the discovered device is continuously checked.
-  - Use WiFi RTT: enables WiFi RTT. This module is only active when WiFi aware is enabled.
-  - Use BLE: enables BLE.
-- Wifi Aware
-  - Refresh Interval: periodically checks for the existence of the discovered device at a set time interval.
-- Wifi RTT
-  - Measurement Interval: sets the distance measurement interval. Do not set the time interval too short.
-- Logging
-  - Write Events to File: records all generated events in a file. Default file name is [current_time.txt] and location is /Android/data/com.example.distancemeasurement/files/Documents/Events/[current_time.txt].
-  - Use Specific File Names: You can set a specific file name.
-  - File Name: You don't need to specify a file extension such as ".txt". The default name is "SNQz4YoYRL.txt".
+***Options***
+- **General**
+  - `Your ID` - this ID will be used to identify the device.
+  - `Device Removal Time (ms)`: if the discovered device is not updated for the set time, the device is removed from the list.
+- **Measurement Methods**
+  - `Use WiFi Aware` - enables WiFi Aware. When WiFi Aware is used alone, only the existence of the discovered device is continuously checked.
+  - `Use WiFi RTT` - enables WiFi RTT. This module is only active when WiFi aware is enabled.
+  - `Use BLE` - enables BLE.
+- **Wifi Aware**
+  - `Refresh Interval` - periodically checks for the existence of the discovered device at a set time interval.
+- **Wifi RTT**
+  - `Measurement Interval` - sets the distance measurement interval. Do not set the time interval too short.
+- **Logging**
+  - `Write Events to File` - records all generated events in a file. Default file name is [current_time.txt] and location is /Android/data/com.example.distancemeasurement/files/Documents/Events/[current_time.txt].
+  - `Use Specific File Names` - You can set a specific file name.
+  - `File Name`: You don't need to specify a file extension such as ".txt". The default name is "SNQz4YoYRL.txt".
   
 # To Do
 
