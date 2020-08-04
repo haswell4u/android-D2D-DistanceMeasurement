@@ -1,7 +1,7 @@
 # 1. Introduction
 
 When researching in the field of mobile systems, depending on the research topic, it is sometimes necessary to measure the distance among mobile devices.
-**This application is designed for experiments measuring distances among Android devices** in such cases.
+***This application is designed for experiments measuring distances among Android devices*** in such cases.
 It can measure the distances using modules such as [WiFi RTT][] over [WiFi Aware][], or get RSSI offered by [BLE][].
 (You need to convert the RSSI to distance information by applying the specific formula you want to test.)
 
@@ -49,7 +49,7 @@ See below for other detailed settings.
 ***Options***
 - **General**
   - `Your ID` - this ID will be used to identify the device.
-  - `Device Removal Time (ms)`: if the discovered device is not updated for the set time, the device is removed from the list.
+  - `Device Removal Time (ms)` - if the discovered device is not updated for the set time, the device is removed from the list.
 - **Measurement Methods**
   - `Use WiFi Aware` - enables WiFi Aware. When WiFi Aware is used alone, only the existence of the discovered device is continuously checked.
   - `Use WiFi RTT` - enables WiFi RTT. This module is only active when WiFi aware is enabled.
@@ -61,7 +61,7 @@ See below for other detailed settings.
 - **Logging**
   - `Write Events to File` - records all generated events in a file. Default file name is [current_time.txt] and location is /Android/data/com.example.distancemeasurement/files/Documents/Events/[current_time.txt].
   - `Use Specific File Names` - You can set a specific file name.
-  - `File Name`: You don't need to specify a file extension such as ".txt". The default name is "SNQz4YoYRL.txt".
+  - `File Name` - You don't need to specify a file extension such as ".txt". The default name is "SNQz4YoYRL.txt".
   
 # To Do
 
